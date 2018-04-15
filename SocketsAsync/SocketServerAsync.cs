@@ -1,8 +1,10 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Net;
 using System.Net.Sockets;
+using System.Text;
 
 namespace SocketsAsync
 {
@@ -12,7 +14,14 @@ namespace SocketsAsync
         private ushort _port;
         private TcpListener _tcpListener;
 
+        private readonly List<TcpClient> _clients;
+
         private bool KeepRunning { get; set; }
+
+        public SocketServerAsync()
+        {
+            _clients = new List<TcpClient>();
+        }
 
         public async void StartListeninFromIncomingConnection(IPAddress ipAddress = null, ushort port = 23000)
         {
@@ -31,7 +40,12 @@ namespace SocketsAsync
             while (KeepRunning)
             {
                 var client = await _tcpListener.AcceptTcpClientAsync();
-                Debug.WriteLine("Client connected: " + client);
+                _clients.Add(client);
+
+                Debug.WriteLine("Client connected: {0} (Client count: {1})",
+                    client.Client.RemoteEndPoint,
+                    _clients.Count);
+
                 WorkWithTcpClient(client);
             }
         }
@@ -46,19 +60,37 @@ namespace SocketsAsync
             {
                 var numRead = await reader.ReadAsync(buff, 0, buff.Length);
 
-                Debug.WriteLine("Number readed: " + numRead);
-
                 if (numRead == 0)
                 {
-                    Debug.WriteLine("Socket was disconnected.");
+                    RemoteClient(client);
                     break;
                 }
 
-                var receivedText = new string(buff);
-                Debug.WriteLine("Received text: " + receivedText);
+                var read = new string(buff);
+                Debug.WriteLine("{0}: {1} (Length: {2})", client.Client.RemoteEndPoint, read, numRead);
 
                 Array.Clear(buff, 0, buff.Length);
             }
+        }
+
+        private void RemoteClient(TcpClient client)
+        {
+            if (!_clients.Contains(client)) return;
+
+            _clients.Remove(client);
+
+            Debug.WriteLine("Client disconnected: {0} (Client count: {1})",
+                client.Client.RemoteEndPoint,
+                _clients.Count);
+        }
+
+        public void SendToAll(string message)
+        {
+            if (string.IsNullOrEmpty(message)) return;
+
+            var buff = Encoding.ASCII.GetBytes(message);
+
+            _clients.ForEach(client => client.GetStream().WriteAsync(buff, 0, buff.Length));
         }
     }
 }

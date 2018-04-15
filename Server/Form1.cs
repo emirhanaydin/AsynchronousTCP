@@ -16,7 +16,13 @@ namespace Server
 
         private void buttonAcceptIncomingConnection_Click(object sender, EventArgs e)
         {
+            buttonAcceptIncomingConnection.Enabled = false;
             _socketServerAsync.StartListeninFromIncomingConnection();
+        }
+
+        private void buttonSendToAll_Click(object sender, EventArgs e)
+        {
+            _socketServerAsync.SendToAll(textBoxSendToAll.Text.Trim());
         }
     }
 }
