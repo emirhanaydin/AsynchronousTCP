@@ -14,15 +14,34 @@ namespace Server
             _socketServerAsync = new SocketServerAsync();
         }
 
-        private void buttonAcceptIncomingConnection_Click(object sender, EventArgs e)
+        private void buttonStartServer_Click(object sender, EventArgs e)
         {
-            buttonAcceptIncomingConnection.Enabled = false;
+            buttonStartServer.Enabled = false;
+            buttonStopServer.Enabled = true;
+            textBoxSendToAll.Enabled = true;
+            buttonSendToAll.Enabled = true;
+
             _socketServerAsync.StartListeninFromIncomingConnection();
         }
 
         private void buttonSendToAll_Click(object sender, EventArgs e)
         {
             _socketServerAsync.SendToAll(textBoxSendToAll.Text.Trim());
+        }
+
+        private void buttonStopServer_Click(object sender, EventArgs e)
+        {
+            _socketServerAsync.StopServer();
+
+            buttonStartServer.Enabled = true;
+            buttonStopServer.Enabled = false;
+            textBoxSendToAll.Enabled = false;
+            buttonSendToAll.Enabled = false;
+        }
+
+        private void Form1_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            _socketServerAsync.StopServer();
         }
     }
 }

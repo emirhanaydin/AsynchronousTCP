@@ -39,7 +39,17 @@ namespace SocketsAsync
 
             while (KeepRunning)
             {
-                var client = await _tcpListener.AcceptTcpClientAsync();
+                TcpClient client;
+                try
+                {
+                    client = await _tcpListener.AcceptTcpClientAsync();
+                }
+                catch (Exception e) when (e is InvalidOperationException || e is SocketException)
+                {
+                    Debug.WriteLine(e);
+                    break;
+                }
+
                 _clients.Add(client);
 
                 Debug.WriteLine("Client connected: {0} (Client count: {1})",
@@ -58,7 +68,19 @@ namespace SocketsAsync
 
             while (KeepRunning)
             {
-                var numRead = await reader.ReadAsync(buff, 0, buff.Length);
+                int numRead;
+
+                try
+                {
+                    numRead = await reader.ReadAsync(buff, 0, buff.Length);
+                }
+                catch (Exception e) when (e is ArgumentNullException || e is ArgumentOutOfRangeException ||
+                                          e is ArgumentException || e is ObjectDisposedException ||
+                                          e is InvalidOperationException)
+                {
+                    Debug.WriteLine(e);
+                    break;
+                }
 
                 if (numRead == 0)
                 {
@@ -91,6 +113,23 @@ namespace SocketsAsync
             var buff = Encoding.ASCII.GetBytes(message);
 
             _clients.ForEach(client => client.GetStream().WriteAsync(buff, 0, buff.Length));
+        }
+
+        public void StopServer()
+        {
+            try
+            {
+                _tcpListener?.Stop();
+            }
+            catch (SocketException e)
+            {
+                Debug.WriteLine(e);
+                return;
+            }
+
+            _clients.ForEach(client => client.Close());
+
+            _clients.Clear();
         }
     }
 }
