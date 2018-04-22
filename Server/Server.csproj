@@ -79,9 +79,9 @@
         <None Include="App.config"/>
     </ItemGroup>
     <ItemGroup>
-        <ProjectReference Include="..\SocketsAsync\SocketsAsync.csproj">
-            <Project>{4ce9535f-aa82-4e65-b569-7f53c1312dcd}</Project>
-            <Name>SocketsAsync</Name>
+        <ProjectReference Include="..\ServerLibrary\ServerLibrary.csproj">
+            <Project>{25bec1ac-b03c-4ee0-af83-356120a9d70c}</Project>
+            <Name>ServerLibrary</Name>
         </ProjectReference>
     </ItemGroup>
     <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets"/>

@@ -6,9 +6,9 @@ using System.Net;
 using System.Net.Sockets;
 using System.Text;
 
-namespace SocketsAsync
+namespace ServerLibrary
 {
-    public class SocketServerAsync
+    public class ServerManager
     {
         private IPAddress _ipAddress;
         private ushort _port;
@@ -18,7 +18,7 @@ namespace SocketsAsync
 
         private bool KeepRunning { get; set; }
 
-        public SocketServerAsync()
+        public ServerManager()
         {
             _clients = new List<TcpClient>();
         }
@@ -44,7 +44,7 @@ namespace SocketsAsync
                 {
                     client = await _tcpListener.AcceptTcpClientAsync();
                 }
-                catch (Exception e) when (e is InvalidOperationException || e is SocketException)
+                catch (Exception e)
                 {
                     Debug.WriteLine(e);
                     break;
@@ -74,9 +74,7 @@ namespace SocketsAsync
                 {
                     numRead = await reader.ReadAsync(buff, 0, buff.Length);
                 }
-                catch (Exception e) when (e is ArgumentNullException || e is ArgumentOutOfRangeException ||
-                                          e is ArgumentException || e is ObjectDisposedException ||
-                                          e is InvalidOperationException)
+                catch (Exception e)
                 {
                     Debug.WriteLine(e);
                     break;

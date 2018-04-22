@@ -1,17 +1,17 @@
 ﻿using System;
 using System.Windows.Forms;
-using SocketsAsync;
+using ServerLibrary;
 
 namespace Server
 {
     public partial class Form1 : Form
     {
-        private readonly SocketServerAsync _socketServerAsync;
+        private readonly ServerManager _serverManager;
 
         public Form1()
         {
             InitializeComponent();
-            _socketServerAsync = new SocketServerAsync();
+            _serverManager = new ServerManager();
         }
 
         private void buttonStartServer_Click(object sender, EventArgs e)
@@ -21,17 +21,17 @@ namespace Server
             textBoxSendToAll.Enabled = true;
             buttonSendToAll.Enabled = true;
 
-            _socketServerAsync.StartListeninFromIncomingConnection();
+            _serverManager.StartListeninFromIncomingConnection();
         }
 
         private void buttonSendToAll_Click(object sender, EventArgs e)
         {
-            _socketServerAsync.SendToAll(textBoxSendToAll.Text.Trim());
+            _serverManager.SendToAll(textBoxSendToAll.Text.Trim());
         }
 
         private void buttonStopServer_Click(object sender, EventArgs e)
         {
-            _socketServerAsync.StopServer();
+            _serverManager.StopServer();
 
             buttonStartServer.Enabled = true;
             buttonStopServer.Enabled = false;
@@ -41,7 +41,7 @@ namespace Server
 
         private void Form1_FormClosing(object sender, FormClosingEventArgs e)
         {
-            _socketServerAsync.StopServer();
+            _serverManager.StopServer();
         }
     }
 }
