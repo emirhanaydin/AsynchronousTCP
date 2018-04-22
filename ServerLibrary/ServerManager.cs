@@ -14,9 +14,11 @@ namespace ServerLibrary
         private ushort _port;
         private TcpListener _tcpListener;
 
+        public EventHandler<ClientConnectedEventArgs> ClientConnected;
+
         private readonly List<TcpClient> _clients;
 
-        private bool Running { get; set; }
+        private bool _running;
 
         public ServerManager()
         {
@@ -35,9 +37,9 @@ namespace ServerLibrary
             _tcpListener = new TcpListener(_ipAddress, _port);
             _tcpListener.Start();
 
-            Running = true;
+            _running = true;
 
-            while (Running)
+            while (_running)
             {
                 TcpClient client;
                 try
@@ -57,6 +59,9 @@ namespace ServerLibrary
                     _clients.Count);
 
                 WorkWithTcpClient(client);
+
+                var clientConnectedEventArgs = new ClientConnectedEventArgs(client.Client.RemoteEndPoint.ToString());
+                ClientConnected(this, clientConnectedEventArgs);
             }
         }
 
@@ -66,7 +71,7 @@ namespace ServerLibrary
 
             var buff = new char[64];
 
-            while (Running)
+            while (_running)
             {
                 int numRead;
 
@@ -124,8 +129,8 @@ namespace ServerLibrary
                 Debug.WriteLine(e);
                 return;
             }
-            
-            Running = false;
+
+            _running = false;
 
             _clients.ForEach(client => client.Close());
 

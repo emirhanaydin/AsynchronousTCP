@@ -12,6 +12,7 @@ namespace Server
         {
             InitializeComponent();
             _serverManager = new ServerManager();
+            _serverManager.ClientConnected += OnClientConnected;
         }
 
         private void buttonStartServer_Click(object sender, EventArgs e)
@@ -42,6 +43,12 @@ namespace Server
         private void Form1_FormClosing(object sender, FormClosingEventArgs e)
         {
             _serverManager.StopServer();
+        }
+
+        private void OnClientConnected(object sender, ClientConnectedEventArgs clientConnectedEventArgs)
+        {
+            textBoxLog.AppendText(
+                $"{DateTime.Now} - Client connected: {clientConnectedEventArgs.Client}{Environment.NewLine}");
         }
     }
 }
