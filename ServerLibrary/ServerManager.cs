@@ -16,7 +16,7 @@ namespace ServerLibrary
 
         private readonly List<TcpClient> _clients;
 
-        private bool KeepRunning { get; set; }
+        private bool Running { get; set; }
 
         public ServerManager()
         {
@@ -35,9 +35,9 @@ namespace ServerLibrary
             _tcpListener = new TcpListener(_ipAddress, _port);
             _tcpListener.Start();
 
-            KeepRunning = true;
+            Running = true;
 
-            while (KeepRunning)
+            while (Running)
             {
                 TcpClient client;
                 try
@@ -66,7 +66,7 @@ namespace ServerLibrary
 
             var buff = new char[64];
 
-            while (KeepRunning)
+            while (Running)
             {
                 int numRead;
 
@@ -124,6 +124,8 @@ namespace ServerLibrary
                 Debug.WriteLine(e);
                 return;
             }
+            
+            Running = false;
 
             _clients.ForEach(client => client.Close());
 
