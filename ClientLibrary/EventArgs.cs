@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace EventLibrary
+namespace ClientLibrary
 {
     public class MessageReceivedEventArgs : EventArgs
     {

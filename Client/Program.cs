@@ -1,6 +1,5 @@
 ﻿using System;
 using ClientLibrary;
-using EventLibrary;
 
 namespace Client
 {

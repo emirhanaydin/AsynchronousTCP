@@ -4,13 +4,11 @@ using System.IO;
 using System.Net;
 using System.Net.Sockets;
 using System.Threading.Tasks;
-using EventLibrary;
 
 namespace ClientLibrary
 {
     public class ClientManager
     {
-        private IPAddress _ipAddress;
         public ushort Port { get; set; }
         private TcpClient _tcpClient;
 
@@ -18,7 +16,7 @@ namespace ClientLibrary
 
         public ClientManager()
         {
-            _ipAddress = null;
+            ServerIpAddress = null;
             _tcpClient = null;
         }
 
@@ -37,11 +35,11 @@ namespace ClientLibrary
                 }
             }
 
-            _ipAddress = ipaddr;
+            ServerIpAddress = ipaddr;
             return true;
         }
 
-        public IPAddress ServerIpAddress => _ipAddress;
+        public IPAddress ServerIpAddress { get; private set; }
 
         public async Task ConnectToServer()
         {
@@ -49,7 +47,7 @@ namespace ClientLibrary
 
             try
             {
-                await _tcpClient.ConnectAsync(_ipAddress, Port);
+                await _tcpClient.ConnectAsync(ServerIpAddress, Port);
             }
             catch (Exception e)
             {
@@ -57,7 +55,7 @@ namespace ClientLibrary
                 throw;
             }
 
-            Console.WriteLine("Connected to server: {0}:{1}", _ipAddress, Port);
+            Console.WriteLine("Connected to server: {0}:{1}", ServerIpAddress, Port);
 
             await ReadDataAsync();
         }
