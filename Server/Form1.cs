@@ -13,6 +13,7 @@ namespace Server
             InitializeComponent();
             _serverManager = new ServerManager();
             _serverManager.ClientConnected += OnClientConnected;
+            _serverManager.MessageReceived += OnMessageReceived;
         }
 
         private void buttonStartServer_Click(object sender, EventArgs e)
@@ -45,10 +46,20 @@ namespace Server
             _serverManager.StopServer();
         }
 
-        private void OnClientConnected(object sender, ClientConnectedEventArgs clientConnectedEventArgs)
+        private void AppendLog(string text)
         {
-            textBoxLog.AppendText(
-                $"{DateTime.Now} - Client connected: {clientConnectedEventArgs.Client}{Environment.NewLine}");
+            textBoxLog.AppendText(text);
+            textBoxLog.AppendText(Environment.NewLine);
+        }
+
+        private void OnClientConnected(object sender, ClientConnectedEventArgs args)
+        {
+            AppendLog($"{DateTime.Now} - Client connected: {args.Client}");
+        }
+
+        private void OnMessageReceived(object sender, MessageReceivedEventArgs args)
+        {
+            AppendLog($"{DateTime.Now} - {args.Sender}: {args.Message}");
         }
     }
 }

@@ -15,6 +15,7 @@ namespace ServerLibrary
         private TcpListener _tcpListener;
 
         public EventHandler<ClientConnectedEventArgs> ClientConnected;
+        public EventHandler<MessageReceivedEventArgs> MessageReceived;
 
         private readonly List<TcpClient> _clients;
 
@@ -58,14 +59,13 @@ namespace ServerLibrary
                     client.Client.RemoteEndPoint,
                     _clients.Count);
 
-                WorkWithTcpClient(client);
+                ReadFromTcpClient(client);
 
-                var clientConnectedEventArgs = new ClientConnectedEventArgs(client.Client.RemoteEndPoint.ToString());
-                ClientConnected(this, clientConnectedEventArgs);
+                ClientConnected?.Invoke(this, new ClientConnectedEventArgs(client.Client.RemoteEndPoint.ToString()));
             }
         }
 
-        private async void WorkWithTcpClient(TcpClient client)
+        private async void ReadFromTcpClient(TcpClient client)
         {
             var reader = new StreamReader(client.GetStream());
 
@@ -93,6 +93,9 @@ namespace ServerLibrary
 
                 var read = new string(buff);
                 Debug.WriteLine("{0}: {1} (Length: {2})", client.Client.RemoteEndPoint, read, numRead);
+
+                MessageReceived?.Invoke(this,
+                    new MessageReceivedEventArgs(client.Client.RemoteEndPoint.ToString(), read));
 
                 Array.Clear(buff, 0, buff.Length);
             }
