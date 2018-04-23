@@ -37,9 +37,9 @@
             // 
             // buttonStartServer
             // 
-            this.buttonStartServer.Location = new System.Drawing.Point(442, 318);
+            this.buttonStartServer.Location = new System.Drawing.Point(548, 289);
             this.buttonStartServer.Name = "buttonStartServer";
-            this.buttonStartServer.Size = new System.Drawing.Size(207, 23);
+            this.buttonStartServer.Size = new System.Drawing.Size(100, 52);
             this.buttonStartServer.TabIndex = 0;
             this.buttonStartServer.Text = "Start Server";
             this.buttonStartServer.UseVisualStyleBackColor = true;
@@ -51,15 +51,15 @@
             this.textBoxSendToAll.Location = new System.Drawing.Point(12, 289);
             this.textBoxSendToAll.Multiline = true;
             this.textBoxSendToAll.Name = "textBoxSendToAll";
-            this.textBoxSendToAll.Size = new System.Drawing.Size(330, 51);
+            this.textBoxSendToAll.Size = new System.Drawing.Size(318, 51);
             this.textBoxSendToAll.TabIndex = 1;
             // 
             // buttonSendToAll
             // 
             this.buttonSendToAll.Enabled = false;
-            this.buttonSendToAll.Location = new System.Drawing.Point(348, 289);
+            this.buttonSendToAll.Location = new System.Drawing.Point(336, 289);
             this.buttonSendToAll.Name = "buttonSendToAll";
-            this.buttonSendToAll.Size = new System.Drawing.Size(88, 52);
+            this.buttonSendToAll.Size = new System.Drawing.Size(100, 52);
             this.buttonSendToAll.TabIndex = 2;
             this.buttonSendToAll.Text = "Send to All";
             this.buttonSendToAll.UseVisualStyleBackColor = true;
@@ -70,7 +70,7 @@
             this.buttonStopServer.Enabled = false;
             this.buttonStopServer.Location = new System.Drawing.Point(442, 289);
             this.buttonStopServer.Name = "buttonStopServer";
-            this.buttonStopServer.Size = new System.Drawing.Size(207, 23);
+            this.buttonStopServer.Size = new System.Drawing.Size(100, 52);
             this.buttonStopServer.TabIndex = 3;
             this.buttonStopServer.Text = "Stop Server";
             this.buttonStopServer.UseVisualStyleBackColor = true;
