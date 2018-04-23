@@ -79,6 +79,10 @@
         <None Include="App.config"/>
     </ItemGroup>
     <ItemGroup>
+        <ProjectReference Include="..\EventLibrary\EventLibrary.csproj">
+            <Project>{28c98edd-964d-4567-97da-d2b860efa545}</Project>
+            <Name>EventLibrary</Name>
+        </ProjectReference>
         <ProjectReference Include="..\ServerLibrary\ServerLibrary.csproj">
             <Project>{25bec1ac-b03c-4ee0-af83-356120a9d70c}</Project>
             <Name>ServerLibrary</Name>

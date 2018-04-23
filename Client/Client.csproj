@@ -46,13 +46,17 @@
             <Project>{dae50e44-cd34-4a06-88e9-2e674cd16b37}</Project>
             <Name>ClientLibrary</Name>
         </ProjectReference>
+        <ProjectReference Include="..\EventLibrary\EventLibrary.csproj">
+            <Project>{28c98edd-964d-4567-97da-d2b860efa545}</Project>
+            <Name>EventLibrary</Name>
+        </ProjectReference>
     </ItemGroup>
     <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets"/>
     <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-           Other similar extension points exist, see Microsoft.Common.targets.
-      <Target Name="BeforeBuild">
-      </Target>
-      <Target Name="AfterBuild">
-      </Target>
-      -->
+             Other similar extension points exist, see Microsoft.Common.targets.
+        <Target Name="BeforeBuild">
+        </Target>
+        <Target Name="AfterBuild">
+        </Target>
+        -->
 </Project>

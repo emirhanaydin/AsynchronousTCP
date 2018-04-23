@@ -1,5 +1,6 @@
 ﻿using System;
 using ClientLibrary;
+using EventLibrary;
 
 namespace Client
 {
@@ -39,6 +40,8 @@ namespace Client
                 return false;
             }
 
+            clientManager.MessageReceived += OnMessageReceived;
+
             do
             {
                 var input = Console.ReadLine();
@@ -54,6 +57,11 @@ namespace Client
             clientManager.DisconnectFromServer();
 
             return true;
+        }
+
+        private static void OnMessageReceived(object sender, MessageReceivedEventArgs e)
+        {
+            Console.WriteLine($"{DateTime.Now} - {e.Sender}: {e.Message}");
         }
     }
 }

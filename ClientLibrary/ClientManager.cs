@@ -4,6 +4,7 @@ using System.IO;
 using System.Net;
 using System.Net.Sockets;
 using System.Threading.Tasks;
+using EventLibrary;
 
 namespace ClientLibrary
 {
@@ -12,6 +13,8 @@ namespace ClientLibrary
         private IPAddress _ipAddress;
         public ushort Port { get; set; }
         private TcpClient _tcpClient;
+
+        public EventHandler<MessageReceivedEventArgs> MessageReceived;
 
         public ClientManager()
         {
@@ -90,8 +93,10 @@ namespace ClientLibrary
                     return;
                 }
 
-                Console.WriteLine("{0}: {1} ({2})", _tcpClient.Client.RemoteEndPoint, new string(buff, 0, length),
-                    length);
+                MessageReceived?.Invoke(this,
+                    new MessageReceivedEventArgs(_tcpClient.Client.RemoteEndPoint.ToString(),
+                        new string(buff, 0, length)));
+
                 buff[0] = (char) 0;
             }
         }
